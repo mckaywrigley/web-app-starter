@@ -1,4 +1,4 @@
-import { Membership } from "@/types/membership"
+import { Membership } from "../../supabase/types"
 import { createClient } from "@supabase/supabase-js"
 import Stripe from "stripe"
 import { stripe } from "./stripe"

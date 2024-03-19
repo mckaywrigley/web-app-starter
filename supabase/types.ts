@@ -422,3 +422,4 @@ export type Enums<
   ? Database["public"]["Enums"][PublicEnumNameOrOptions]
   : never
 
+export type Membership = 'free' | 'pro' | 'enterprise';
