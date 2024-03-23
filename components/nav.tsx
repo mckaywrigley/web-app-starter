@@ -25,6 +25,11 @@ export const Nav: FC<NavProps> = ({ user }) => {
 
   const [open, setOpen] = useState(false)
 
+  // If the user is on the dashboard, don't show the nav
+  if (pathname.includes("dashboard")) {
+    return null
+  }
+
   return (
     <>
       <div className="hidden p-4 lg:flex lg:items-center lg:justify-between">
@@ -66,9 +71,9 @@ export const Nav: FC<NavProps> = ({ user }) => {
                 Logout
               </Button>
 
-              <Link href="/todos">
+              <Link href="/dashboard">
                 <Button className="bg-blue-500 text-white hover:bg-blue-600">
-                  Todos
+                  Dashboard
                 </Button>
               </Link>
             </>
@@ -80,7 +85,7 @@ export const Nav: FC<NavProps> = ({ user }) => {
 
               <Link href="/join">
                 <Button className="bg-blue-500 text-white hover:bg-blue-600">
-                  Signup
+                  Join Now
                 </Button>
               </Link>
             </>
@@ -137,9 +142,9 @@ export const Nav: FC<NavProps> = ({ user }) => {
                   Logout
                 </Button>
 
-                <Link className="w-full" href="/todos">
+                <Link className="w-full" href="/dashboard">
                   <Button className="w-full bg-blue-500 text-lg text-white hover:bg-blue-600">
-                    Todos
+                    Dashboard
                   </Button>
                 </Link>
               </div>
@@ -153,7 +158,7 @@ export const Nav: FC<NavProps> = ({ user }) => {
 
                 <Link className="w-full" href="/join">
                   <Button className="w-full bg-blue-500 text-lg text-white hover:bg-blue-600">
-                    Signup
+                    Join Now
                   </Button>
                 </Link>
               </div>

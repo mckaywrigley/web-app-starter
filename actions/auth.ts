@@ -27,8 +27,13 @@ export async function login(formData: FormData) {
   if (userData.user) {
     profile = await getProfile(userData.user.id)
 
-    revalidatePath("/", "layout")
-    return redirect("/todos")
+    if (profile.membership === "free") {
+      revalidatePath("/", "layout")
+      return redirect("/join")
+    } else {
+      revalidatePath("/", "layout")
+      return redirect("/dashboard")
+    }
   }
 }
 
@@ -48,10 +53,9 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath("/", "layout")
-  return redirect("/todos")
-  // return redirect(
-  //   "/login?message=Please check your email to confirm your account"
-  // )
+  return redirect(
+    "/login?message=Please check your email to confirm your account"
+  )
 }
 
 export async function googleSignIn() {
@@ -62,7 +66,7 @@ export async function googleSignIn() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/api/auth/callback?next=/todos`
+      redirectTo: `${origin}/api/auth/callback?next=/dashboard`
     }
   })
 

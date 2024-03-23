@@ -23,14 +23,16 @@ export default async function RootLayout({
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
-  const { data, error } = await supabase.auth.getUser()
+  const { data } = await supabase.auth.getUser()
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers attribute="class" defaultTheme="light">
           <Toaster richColors position="top-center" duration={3000} />
+
           <Nav user={data.user} />
+
           <div className="flex flex-col items-center">{children}</div>
         </Providers>
       </body>

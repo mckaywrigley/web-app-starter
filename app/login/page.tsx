@@ -1,15 +1,36 @@
 import { googleSignIn, login, signup } from "@/actions/auth"
+import { getProfile } from "@/actions/profiles"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { createClient } from "@/lib/supabase/server"
 import { IconBrandGoogleFilled } from "@tabler/icons-react"
+import { cookies } from "next/headers"
 import Image from "next/image"
+import { redirect } from "next/navigation"
 
 export default async function LoginPage({
   searchParams
 }: {
   searchParams: { message: string }
 }) {
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data } = await supabase.auth.getUser()
+
+  if (data.user) {
+    const profile = await getProfile(data.user.id)
+
+    // If the user is on a free plan, redirect them to the join page
+    if (profile.membership === "free") {
+      return redirect("/join")
+    } else {
+      // If the user is logged in and on a paid plan, redirect them to the dashboard
+      return redirect("/dashboard")
+    }
+  }
+
   return (
     <form className="mt-20 w-full max-w-[400px] p-6">
       <div className="flex w-full items-center justify-center space-x-4">
