@@ -1,12 +1,12 @@
-import { Membership } from "@/types/membership"
+import { Tables } from "@/supabase/types"
 import { createClient } from "@supabase/supabase-js"
 import Stripe from "stripe"
 import { stripe } from "./stripe"
 
 const getMembershipStatus = (
   status: Stripe.Subscription.Status,
-  membership: Membership
-): Membership => {
+  membership: Tables<"profiles">["membership"]
+): Tables<"profiles">["membership"] => {
   switch (status) {
     case "active":
     case "trialing":
@@ -61,7 +61,8 @@ export const manageSubscriptionStatusChange = async (
   })
 
   const product = await stripe.products.retrieve(productId)
-  const membership = product.metadata.membership as Membership
+  const membership = product.metadata
+    .membership as Tables<"profiles">["membership"]
 
   const membershipStatus = getMembershipStatus(subscription.status, membership)
 
